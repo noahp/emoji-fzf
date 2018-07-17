@@ -4,6 +4,8 @@
 # emoji fzf
 Small utility for manipulating emojis via [fzf's](https://github.com/junegunn/fzf) `--preview` hook!
 
+<img src="https://cdn.rawgit.com/noahp/emoji_fzf/assets/demo.svg">
+
 Depends on fzf being installed to the system (integrates via bash alias/
 function rather than using fzf bindings or whatnot).
 
