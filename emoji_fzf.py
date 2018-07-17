@@ -16,6 +16,7 @@ EMOJI_LIB_JSON = os.path.join(sys.prefix, "emojilib", "emojis.json")
 
 
 @click.group()
+@click.version_option()
 def cli():
     """CLI entrance point"""
     pass

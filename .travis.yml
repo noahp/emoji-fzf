@@ -29,6 +29,7 @@ script:
 
   # test run
   - emoji_fzf --help
+  - emoji_fzf --version
   - emoji_fzf preview > /dev/null
   - emoji_fzf get --name zap
   - echo "zap" | emoji_fzf get
