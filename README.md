@@ -2,7 +2,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/emoji_fzf.svg?longCache=true)](https://pypi.org/project/emoji_fzf/)
 
 # emoji fzf
-Small utility for manipulating emojis via [fzf](https://github.com/junegunn/fzf's) `--preview` hook!
+Small utility for manipulating emojis via [fzf's](https://github.com/junegunn/fzf) `--preview` hook!
 
 Depends on fzf being installed to the system (integrates via bash alias/
 function rather than using fzf bindings or whatnot).
