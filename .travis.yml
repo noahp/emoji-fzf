@@ -1,0 +1,43 @@
+language: python
+
+dist: xenial
+sudo: true
+
+before_install:
+  - python --version
+  - uname -a
+  - lsb_release -a
+
+install:
+  - pip install -U setuptools
+  - pip install pylint
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.7' ]]; then pip install black; fi
+  - pip --version
+
+script:
+  # formatting
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.7' ]]; then black --check --verbose .; fi
+
+  # verify wheel build works
+  - python setup.py bdist_wheel --universal
+
+  # test install
+  - pip install dist/emoji_fzf-*-py2.py3-none-any.whl
+
+  # pylint comply after install, so needed packages are available
+  - pylint *.py
+
+  # test run
+  - emoji_fzf --help
+  - emoji_fzf preview > /dev/null
+  - emoji_fzf get --name zap
+  - echo "zap" | emoji_fzf get
+
+python:
+  - "2.7"
+  - "3.7"
+
+notifications:
+  email:
+    on_success: always
+    on_failure: always
