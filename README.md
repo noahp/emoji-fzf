@@ -18,6 +18,6 @@ pip install emoji_fzf
 
 # add me to your ~/.bashrc or ~/.zshrc or whatnot
 alias emoj="emoji_fzf preview | fzf --preview 'emoji_fzf get --name {1}' | cut -d \" \" -f 1 | emoji_fzf get"
-# to copy to xclip (use pbcopy on mac) after selecting
-emoj | xclip
+# to copy to xclip system keyboard (on mac use pbcopy) after selecting
+emoj | xclip -selection c
 ```
