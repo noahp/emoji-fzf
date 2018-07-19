@@ -14,7 +14,7 @@ To use with fzf's preview browser, you'll need to install fzf, see instructions:
 https://github.com/junegunn/fzf#installation
 
 ```bash
-pip install emoji_fzf
+pip install emoji-fzf
 
 # add me to your ~/.bashrc or ~/.zshrc or whatnot
 alias emoj="emoji_fzf preview | fzf --preview 'emoji_fzf get --name {1}' | cut -d \" \" -f 1 | emoji_fzf get"

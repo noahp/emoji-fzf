@@ -10,9 +10,22 @@ import os
 import sys
 
 import click
+import pkg_resources
 
-# The emoji library is installed to the system directory on package install
-EMOJI_LIB_JSON = os.path.join(sys.prefix, "emojilib", "emojis.json")
+# The emoji library is installed relative to this package on install
+if pkg_resources.resource_exists(__name__, "emojilib/emojis.json"):
+    EMOJI_LIB_JSON = pkg_resources.resource_string(__name__, "emojilib/emojis.json")
+else:
+    # it's possible we're running from the source dist instead
+    EMOJI_LIB_JSON = open(
+        os.path.join(os.path.abspath(__file__, "emojilib", "emojis.json"), "r")
+    ).read()
+
+# Load and parse the emoji data now
+EMOJI_LIB_JSON = json.loads(EMOJI_LIB_JSON)
+
+# Sanity check
+assert EMOJI_LIB_JSON, "Dang, emojilib/emojis.json is not installed 😢"
 
 
 @click.group()
@@ -25,9 +38,7 @@ def cli():
 @cli.command()
 def preview():
     """Return an fzf-friendly search list for emoji"""
-    with open(EMOJI_LIB_JSON, "r") as emojifile:
-        emojilist = json.load(emojifile)
-    for key, val in emojilist.items():
+    for key, val in EMOJI_LIB_JSON.items():
         click.secho(key, bold=True, nl=False)
         click.echo(u" {}".format(u" ".join(val["keywords"])))
 
@@ -42,10 +53,9 @@ def get(name=None):
     if name is None and not sys.stdin.isatty():
         name = click.get_text_stream("stdin").read().strip()
     if not name:
-        raise RuntimeError("No emoji key passed 😭")
-    with open(EMOJI_LIB_JSON, "r") as emojifile:
-        emojilist = json.load(emojifile)
-    render = emojilist[name]["char"]
+        sys.exit(-1)
+
+    render = EMOJI_LIB_JSON[name]["char"]
 
     # include newline only if we're not redirected
     if sys.stdout.isatty():
