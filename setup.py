@@ -8,12 +8,12 @@ from setuptools import setup
 setup(
     # I think using `-` instead of `_` is more user-friendly, but due to python
     # import directives not allowing `-`, keep everything consistent with `_`.
-    name="emoji_fzf",
+    name="emoji-fzf",
     version="0.0.6",
     description="Emoji searcher for use with fzf",
     author="Noah Pendleton",
     author_email="2538614+noahp@users.noreply.github.com",
-    url="https://github.com/noahp/emoji_fzf",
+    url="https://github.com/noahp/emoji-fzf",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     install_requires=["click"],
@@ -23,7 +23,7 @@ setup(
     py_modules=["emoji_fzf"],
     packages=["emojilib"],
     include_package_data=True,
-    entry_points={"console_scripts": ["emoji_fzf = emoji_fzf:cli"]},
+    entry_points={"console_scripts": ["emoji-fzf = emoji_fzf:cli"]},
     # For scripts, this corrects shebang replacement, from:
     #  https://github.com/pybuilder/pybuilder/issues/168
     options={"build_scripts": {"executable": "/usr/bin/env python"}},

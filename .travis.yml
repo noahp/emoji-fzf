@@ -28,11 +28,11 @@ script:
   - pylint *.py
 
   # test run
-  - emoji_fzf --help
-  - emoji_fzf --version
-  - emoji_fzf preview > /dev/null
-  - emoji_fzf get --name zap
-  - echo "zap" | emoji_fzf get
+  - emoji-fzf --help
+  - emoji-fzf --version
+  - emoji-fzf preview > /dev/null
+  - emoji-fzf get --name zap
+  - echo "zap" | emoji-fzf get
 
 python:
   - "2.7"
