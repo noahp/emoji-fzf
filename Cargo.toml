@@ -7,8 +7,13 @@ homepage = "https://github.com/noahp/emoji-fzf-tree"
 repository = "https://github.com/noahp/emoji-fzf-tree.git"
 license = "MIT"
 readme = "README.md"
+build = "build.rs"
 
 [dependencies]
 clap = "~2.32"
 human-panic = "~1.0"
 isatty = "~0.1"
+phf = "0.7.23"
+
+[build-dependencies]
+phf_codegen = "0.7.23"

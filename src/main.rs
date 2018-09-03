@@ -5,8 +5,11 @@
 extern crate human_panic;
 extern crate clap;
 extern crate isatty;
+extern crate phf;
 use std::io;
 use std::io::Read;
+
+// static EMOJI_MAP: phf::Map<&'static str, &'static str>
 
 fn main() {
     setup_panic!();
