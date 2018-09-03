@@ -1,31 +1,47 @@
-language: python
+language: rust
 
-dist: xenial
-sudo: true
-
-before_install:
-  - python --version
+before_script:
   - uname -a
   - lsb_release -a
 
-install:
-  - pip install -U setuptools
-  - pip install pylint
-  - if [[ $TRAVIS_PYTHON_VERSION == '3.7' ]]; then pip install black; fi
-  - pip --version
+env:
+  global:
+    - RUST_BACKTRACE: full
+
+cache:
+  apt: true
+
+matrix:
+  include:
+    - rust: stable
+    - rust: beta
+    - rust: nightly
+      env: IS_NIGHTLY=1
+      before_script:
+        - uname -a
+        - lsb_release -a
+        - rustup component add clippy-preview
+        - rustup component add rustfmt-preview
+
+  fast_finish: true
+  allow_failures:
+    - rust: nightly
 
 script:
-  # formatting
-  - if [[ $TRAVIS_PYTHON_VERSION == '3.7' ]]; then black --check --verbose .; fi
+  # build
+  - cargo build --verbose
 
-  # verify wheel build works
-  - python setup.py bdist_wheel --universal
+  # lint; only available on nightly right now
+  - if [[ $IS_NIGHTLY = "1" ]]; then cargo clippy; fi
+
+  # format; nightly and stable may have different formatters, so use nightly's
+  - if [[ $IS_NIGHTLY = "1" ]]; then cargo fmt --all -- --check; fi
+
+  # test
+  - cargo test --verbose
 
   # test install
-  - pip install dist/emoji_fzf-*-py2.py3-none-any.whl
-
-  # pylint comply after install, so needed packages are available
-  - pylint *.py
+  - cargo install --path .
 
   # test run
   - emoji-fzf --help
@@ -34,11 +50,35 @@ script:
   - emoji-fzf get --name zap
   - echo "zap" | emoji-fzf get
 
-python:
-  - "2.7"
-  - "3.7"
-
 notifications:
   email:
     on_success: always
     on_failure: always
+
+# pacakges required for building and using kcov
+addons:
+  apt:
+    packages:
+      - libcurl4-openssl-dev
+      - libelf-dev
+      - libdw-dev
+      - cmake
+      - gcc
+      - binutils-dev
+      - libiberty-dev
+
+# kcov for coverage stats
+after_success: |
+  wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
+  tar xzf master.tar.gz &&
+  cd kcov-master &&
+  mkdir build &&
+  cd build &&
+  cmake .. &&
+  make &&
+  make install DESTDIR=../../kcov-build &&
+  cd ../.. &&
+  rm -rf kcov-master &&
+  for file in target/debug/emoji-fzf-*[^\.d]; do mkdir -p "target/cov/$(basename $file)"; ./kcov-build/usr/local/bin/kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename $file)" "$file"; done &&
+  bash <(curl -s https://codecov.io/bash) &&
+  echo "Uploaded code coverage"

@@ -1,0 +1,14 @@
+[package]
+name = "emoji-fzf"
+version = "0.1.0"
+authors = ["Noah Pendleton <2538614+noahp@users.noreply.github.com>"]
+description = "CLI emoji picker that pairs nicely with fzf --preview"
+homepage = "https://github.com/noahp/emoji-fzf-tree"
+repository = "https://github.com/noahp/emoji-fzf-tree.git"
+license = "MIT"
+readme = "README.md"
+
+[dependencies]
+clap = "~2.32"
+human-panic = "~1.0"
+isatty = "~0.1"

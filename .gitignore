@@ -1,4 +1,3 @@
-.eggs/
-build/
-dist/
-*.egg-info
+Cargo.lock
+/target
+**/*.rs.bk
