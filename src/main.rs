@@ -9,7 +9,8 @@ extern crate phf;
 use std::io;
 use std::io::Read;
 
-// static EMOJI_MAP: phf::Map<&'static str, &'static str>
+// YOLO
+include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
 
 fn main() {
     setup_panic!();
@@ -40,6 +41,9 @@ fn main() {
                 reader.read_to_string(&mut buffer).ok();
                 print!("{}", buffer);
             }
+
+            println!("{:#?}", EMOJI_MAP["grinning"]);
+
         }
         _ => (),
     }

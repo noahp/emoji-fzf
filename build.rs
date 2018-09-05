@@ -24,9 +24,21 @@ fn main() {
 
     write!(
         &mut file,
-        "static EMOJI_MAP: phf::Map<&'static str, &'static str> = "
+        r#"macro_rules! hashmap {{
+    ($( $key: expr => $val: expr ),*) => {{{{
+         let mut map = ::std::collections::HashMap::new();
+         $( map.insert($key, $val); )*
+         map
+    }}}}
+}}
+
+"#
     ).unwrap();
-    let mut emoji_phf: phf_codegen::Map<String> = phf_codegen::Map::new();
+
+    write!(
+        &mut file,
+        "static EMOJI_MAP: HashMap<String, EmojiEntry> = hashmap! "
+    ).unwrap();
 
     let emoji_raw = r#"{
         "grinning": {
@@ -46,11 +58,11 @@ fn main() {
     let emoji_map: HashMap<String, EmojiEntry> = serde_json::from_str(emoji_raw).unwrap();
 
     println!("{:#?}", emoji_map);
+    write!(&mut file, "{:#?}", emoji_map).unwrap();
 
     // for (key, value) in emoji_map {
     //     emoji_map.entry(key, value);
     // }
 
-    emoji_phf.build(&mut file).unwrap();
     write!(&mut file, ";\n").unwrap();
 }
