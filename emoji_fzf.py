@@ -18,7 +18,7 @@ if pkg_resources.resource_exists(__name__, "emojilib/emojis.json"):
 else:
     # it's possible we're running from the source dist instead
     EMOJI_LIB_JSON = open(
-        os.path.join(os.path.abspath(__file__, "emojilib", "emojis.json"), "r")
+        os.path.join(os.path.abspath(__file__), "emojilib", "emojis.json"), "r"
     ).read()
 
 # Load and parse the emoji data now
@@ -32,7 +32,6 @@ assert EMOJI_LIB_JSON, "Dang, emojilib/emojis.json is not installed 😢"
 @click.version_option()
 def cli():
     """CLI entrance point"""
-    pass
 
 
 @cli.command()

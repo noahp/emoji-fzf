@@ -3,18 +3,27 @@ Package setup.
 
 Set me up with `python setup.py bdist_wheel --universal`
 """
+import io
 from setuptools import setup
+
+# Get long description from readme
+with io.open("README.md", "rt", encoding="utf8") as readmefile:
+    README = readmefile.read()
 
 setup(
     # I think using `-` instead of `_` is more user-friendly, but due to python
     # import directives not allowing `-`, keep everything consistent with `_`.
     name="emoji-fzf",
-    version="0.0.6",
+    version="0.0.7",
     description="Emoji searcher for use with fzf",
     author="Noah Pendleton",
     author_email="2538614+noahp@users.noreply.github.com",
     url="https://github.com/noahp/emoji-fzf",
-    long_description=open("README.md").read(),
+    project_urls={
+        "Code": "https://github.com/noahp/emoji-fzf",
+        "Issue tracker": "https://github.com/noahp/emoji-fzf/issues",
+    },
+    long_description=README,
     long_description_content_type="text/markdown",
     install_requires=["click"],
     # using markdown as pypi description:
@@ -27,4 +36,11 @@ setup(
     # For scripts, this corrects shebang replacement, from:
     #  https://github.com/pybuilder/pybuilder/issues/168
     options={"build_scripts": {"executable": "/usr/bin/env python"}},
+    classifiers=[
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Operating System :: OS Independent",
+    ],
 )
