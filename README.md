@@ -1,5 +1,13 @@
-[![Build Status](https://travis-ci.com/noahp/emoji-fzf.svg?branch=master)](https://travis-ci.com/noahp/emoji-fzf)
-[![PyPI version](https://img.shields.io/pypi/v/emoji-fzf.svg?longCache=true)](https://pypi.org/project/emoji-fzf/)
+[![Code style:
+black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)](https://github.com/ambv/black)
+[![Travis (.com)
+branch](https://img.shields.io/travis/com/noahp/emoji-fzf/master.svg?style=for-the-badge)](https://travis-ci.com/noahp/emoji-fzf)
+[![PyPI
+version](https://img.shields.io/pypi/v/emoji-fzf.svg?style=for-the-badge)](https://pypi.org/project/emoji-fzf/)
+[![PyPI
+pyversions](https://img.shields.io/pypi/pyversions/emoji-fzf.svg?style=for-the-badge)](https://pypi.python.org/pypi/emoji-fzf/)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 # emoji fzf
 Small utility for manipulating emojis via [fzf's](https://github.com/junegunn/fzf) `--preview` hook!
