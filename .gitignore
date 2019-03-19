@@ -4,3 +4,6 @@
 *.pyc
 build/
 dist/
+
+# generated file
+emoji_fzf_emojilib.py
