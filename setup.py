@@ -73,7 +73,7 @@ setup(
     # I think using `-` instead of `_` is more user-friendly, but due to python
     # import directives not allowing `-`, keep everything consistent with `_`.
     name="emoji-fzf",
-    version="0.2.0",
+    version="0.2.1",
     description="Emoji searcher for use with fzf",
     author="Noah Pendleton",
     author_email="2538614+noahp@users.noreply.github.com",
@@ -95,6 +95,7 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Operating System :: OS Independent",
     ],
 )
