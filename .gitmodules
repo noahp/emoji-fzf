@@ -1,3 +1,6 @@
 [submodule "emojilib"]
 	path = emojilib
-	url = https://github.com/muan/emojilib.git
+	url = ../../muan/emojilib.git
+[submodule "gemoji"]
+	path = gemoji
+	url = ../../github/gemoji

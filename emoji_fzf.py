@@ -21,7 +21,7 @@ def preview():
     """Return an fzf-friendly search list for emoji"""
     for key, val in EMOJIS.items():
         click.secho(key, bold=True, nl=False)
-        click.echo(u" {}".format(u" ".join(val["keywords"])))
+        click.echo(u" {}".format(u" ".join(val["aliases"])))
 
 
 @cli.command()
@@ -36,7 +36,7 @@ def get(name=None):
     if not name:
         sys.exit(-1)
 
-    render = EMOJIS[name]["char"]
+    render = EMOJIS[name]["emoji"]
 
     # include newline only if we're not redirected
     if sys.stdout.isatty():
