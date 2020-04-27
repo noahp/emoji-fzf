@@ -5,9 +5,12 @@ Parse emojilib keyword list and provide it as an fzf --preview input.
 Result is a emoji cli fuzzy search utility 🎉!
 """
 from __future__ import print_function
+
 import sys
+
 import click
-from emoji_fzf_emojilib import EMOJIS
+
+from .emoji_fzf_emojilib import EMOJIS
 
 
 @click.group()
