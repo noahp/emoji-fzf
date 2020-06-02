@@ -18,14 +18,9 @@ jobs:
         with:
           submodules: recursive
 
-      # build the Docker image we use to run the tests
-      - name: Docker build
-        run: docker build -t emoji-fzf --build-arg "UID=$(id -u)" -f Dockerfile .
-
-      # execute tox in the docker container. don't run in parallel; conda has
-      # issues when we do this
-      - name: Docker run tests
-        run: docker run -v $(pwd):/mnt/workspace -t emoji-fzf bash -c "cd /mnt/workspace && tox"
+      # run the tests in docker
+      - name: test.sh
+        run: ./test.sh
 
       # upload-artifact is used to save the py27 wheel. this wheel is compatible
       # with python2 and python3

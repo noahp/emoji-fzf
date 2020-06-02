@@ -46,7 +46,7 @@ before their aliases you can use the following alias instead:
 alias emoj="emoji-fzf preview --prepend | fzf | awk '{ print \$1 }'"
 ```
 
-## Devlopment/testing
+## Development/testing
 
 This uses a Dockerfile to keep the test build environment relatively clean and
 locked. The full test infrastructure is:
