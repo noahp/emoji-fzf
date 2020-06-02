@@ -20,9 +20,19 @@ def cli():
 
 
 @cli.command()
-def preview():
+@click.option(
+    "--prepend",
+    "prepend_emoji",
+    help="Whether to prefix the preview with the emoji",
+    is_flag=True,
+    default=False,
+    show_default=True,
+)
+def preview(prepend_emoji=False):
     """Return an fzf-friendly search list for emoji"""
     for key, val in EMOJIS.items():
+        if prepend_emoji:
+            click.secho(u"{} ".format(val["emoji"]), nl=False)
         click.secho(key, bold=True, nl=False)
         click.echo(u" {}".format(u" ".join(val["aliases"])))
 

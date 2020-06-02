@@ -37,6 +37,15 @@ alias emoj="emoji-fzf preview | fzf --preview 'emoji-fzf get --name {1}' | cut -
 emoj | xclip -selection c
 ```
 
+## Alternative setup
+
+If you prefer not to use fzf's preview feature and have the emojis appear
+before their aliases you can use the following alias instead:
+
+```bash
+alias emoj="emoji-fzf preview --prepend | fzf | awk '{ print \$1 }'"
+```
+
 ## Devlopment/testing
 
 This uses a Dockerfile to keep the test build environment relatively clean and
