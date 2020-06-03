@@ -60,15 +60,13 @@ aliases and not replace them.
 ```json
 [
   {
-    "emoji": "👍",
-    "aliases": [
+    "👍": [
       "my-custom-alias",
       "good-boy"
     ]
   },
   {
-    "emoji": "💯",
-    "aliases": [
+    "💯": [
       "epic-victory-royale"
     ]
   }
@@ -78,7 +76,7 @@ aliases and not replace them.
 2. Now you can call `emoji-fzf` like so:
 
 ```bash
-emoji-fzf preview --custom-aliases /path/to/your-custom-aliases.json
+emoji-fzf --custom-aliases /path/to/your-custom-aliases.json preview
 ```
 
 ## Development/testing
