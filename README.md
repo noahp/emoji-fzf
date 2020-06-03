@@ -46,6 +46,40 @@ before their aliases you can use the following alias instead:
 alias emoj="emoji-fzf preview --prepend | fzf | awk '{ print \$1 }'"
 ```
 
+## Custom aliases
+
+emoji-fzf uses a pre-defined set of aliases for every emoji. If you want to
+define your own, ie add custom aliases for some emojis you can do this via the
+`--custom-aliases` flag.
+
+Please note that these aliases will be appended to the list of pre-defined
+aliases and not replace them.
+
+1. First you need to create a JSON file with the following structure:
+
+```json
+[
+  {
+    "emoji": "👍",
+    "aliases": [
+      "my-custom-alias",
+      "good-boy"
+    ]
+  },
+  {
+    "emoji": "💯",
+    "aliases": [
+      "epic-victory-royale"
+  }
+]
+```
+
+2. Now you can call `emoji-fzf` like so:
+
+```bash
+emoji-fzf preview --custom-aliases /path/to/your-custom-aliases.json
+```
+
 ## Development/testing
 
 This uses a Dockerfile to keep the test build environment relatively clean and

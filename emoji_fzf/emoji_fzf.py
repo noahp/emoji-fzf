@@ -6,6 +6,7 @@ Result is a emoji cli fuzzy search utility 🎉!
 """
 from __future__ import print_function
 
+import json
 import sys
 
 import click
@@ -28,13 +29,34 @@ def cli():
     default=False,
     show_default=True,
 )
-def preview(prepend_emoji=False):
+@click.option(
+    "-c",
+    "--custom-aliases",
+    "custom_aliases_file",
+    help="Path to custom alias JSON file",
+    type=click.File("r"),
+    default=None,
+)
+def preview(prepend_emoji=False, custom_aliases_file=None):
     """Return an fzf-friendly search list for emoji"""
+    custom_aliases = {}
+    if custom_aliases_file:
+        try:
+            custom_aliases = {
+                x.get("emoji"): x.get("aliases") for x in json.load(custom_aliases_file)
+            }
+        except AttributeError:
+            print("Invalid customization provided", file=sys.stderr)
+            sys.exit(2)
+
     for key, val in EMOJIS.items():
+        emoji = val.get("emoji", "?")
         if prepend_emoji:
-            click.secho(u"{} ".format(val["emoji"]), nl=False)
+            click.secho(u"{} ".format(emoji), nl=False)
         click.secho(key, bold=True, nl=False)
-        click.echo(u" {}".format(u" ".join(val["aliases"])))
+        aliases = list(val.get("aliases", []))
+        aliases += custom_aliases.get(emoji, [])
+        click.echo(u" {}".format(u" ".join(aliases)))
 
 
 @cli.command()

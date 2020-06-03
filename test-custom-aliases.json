@@ -1,0 +1,17 @@
+[
+  {
+    "emoji": "🐉",
+    "aliases": [
+      "epic-dragon",
+      "test",
+      "random-custom-test-alias"
+    ]
+  },
+  {
+    "emoji": "💯",
+    "aliases": [
+      "test",
+      "random-custom-test-alias"
+    ]
+  }
+]
