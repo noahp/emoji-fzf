@@ -70,6 +70,7 @@ aliases and not replace them.
     "emoji": "💯",
     "aliases": [
       "epic-victory-royale"
+    ]
   }
 ]
 ```
