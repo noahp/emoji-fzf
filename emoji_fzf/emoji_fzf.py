@@ -16,7 +16,6 @@ from .emoji_fzf_emojilib import EMOJIS
 
 @click.group()
 @click.version_option()
-@click.pass_context
 @click.option(
     "-c",
     "--custom-aliases",
@@ -25,29 +24,24 @@ from .emoji_fzf_emojilib import EMOJIS
     type=click.File("r"),
     default=None,
 )
-def cli(ctx, custom_aliases_file=None):
+def cli(custom_aliases_file=None):
     """CLI entrance point"""
-    ctx.ensure_object(dict)
-    emojis_custom = EMOJIS
     if custom_aliases_file:
         try:
             custom_aliases = json.load(custom_aliases_file)
+            for item in custom_aliases:
+                emoji = list(item.keys())[0]
+                cust_aliases = item.get(emoji, [])
+                for key, val in EMOJIS.items():
+                    if val.get("emoji") == emoji:
+                        EMOJIS[key]["aliases"] = set(
+                            list(EMOJIS[key]["aliases"]) + cust_aliases
+                        )
+                        # No need to go further
+                        break
         except AttributeError:
             print("The custom alias file provided is invalid", file=sys.stderr)
             sys.exit(2)
-
-        for item in custom_aliases:
-            emoji = list(item.keys())[0]
-            cust_aliases = item.get(emoji, [])
-            for key, val in emojis_custom.items():
-                if val.get("emoji") == emoji:
-                    emojis_custom[key]["aliases"] = set(
-                        list(emojis_custom[key]["aliases"]) + cust_aliases
-                    )
-                    # No need to go further
-                    break
-
-    ctx.obj["emojis"] = emojis_custom
 
 
 @cli.command()
@@ -59,10 +53,9 @@ def cli(ctx, custom_aliases_file=None):
     default=False,
     show_default=True,
 )
-@click.pass_context
-def preview(ctx, prepend_emoji=False):
+def preview(prepend_emoji=False):
     """Return an fzf-friendly search list for emoji"""
-    for name, val in ctx.obj["emojis"].items():
+    for name, val in EMOJIS.items():
         emoji = val.get("emoji", "?")
         if prepend_emoji:
             click.secho(u"{} ".format(emoji), nl=False)
@@ -72,8 +65,7 @@ def preview(ctx, prepend_emoji=False):
 
 @cli.command()
 @click.option("--name", help="Name of emoji to retrieve", type=click.STRING)
-@click.pass_context
-def get(ctx, name=None):
+def get(name=None):
     """
     Return an emoji by canonical name. Pipe a name string in on stdin, or
     provide the name via `--name` arg.
@@ -83,7 +75,7 @@ def get(ctx, name=None):
     if not name:
         sys.exit(-1)
 
-    render = ctx.obj["emojis"][name]["emoji"]
+    render = EMOJIS[name]["emoji"]
 
     # include newline only if we're not redirected
     if sys.stdout.isatty():
