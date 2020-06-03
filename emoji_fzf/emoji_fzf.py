@@ -31,14 +31,14 @@ def cli(ctx, custom_aliases_file=None):
     emojis_custom = EMOJIS
     if custom_aliases_file:
         try:
-            custom_aliases = {
-                x.get("emoji"): x.get("aliases") for x in json.load(custom_aliases_file)
-            }
+            custom_aliases = json.load(custom_aliases_file)
         except AttributeError:
             print("The custom alias file provided is invalid", file=sys.stderr)
             sys.exit(2)
 
-        for emoji, cust_aliases in custom_aliases.items():
+        for item in custom_aliases:
+            emoji = list(item.keys())[0]
+            cust_aliases = item.get(emoji, [])
             for key, val in emojis_custom.items():
                 if val.get("emoji") == emoji:
                     emojis_custom[key]["aliases"] = set(
@@ -62,11 +62,11 @@ def cli(ctx, custom_aliases_file=None):
 @click.pass_context
 def preview(ctx, prepend_emoji=False):
     """Return an fzf-friendly search list for emoji"""
-    for key, val in ctx.obj["emojis"].items():
+    for name, val in ctx.obj["emojis"].items():
         emoji = val.get("emoji", "?")
         if prepend_emoji:
             click.secho(u"{} ".format(emoji), nl=False)
-        click.secho(key, bold=True, nl=False)
+        click.secho(name, bold=True, nl=False)
         click.echo(u" {}".format(u" ".join(val.get("aliases", set()))))
 
 
