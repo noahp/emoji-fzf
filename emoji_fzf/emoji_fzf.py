@@ -6,6 +6,7 @@ Result is a emoji cli fuzzy search utility 🎉!
 """
 from __future__ import print_function
 
+import json
 import sys
 
 import click
@@ -15,8 +16,32 @@ from .emoji_fzf_emojilib import EMOJIS
 
 @click.group()
 @click.version_option()
-def cli():
+@click.option(
+    "-c",
+    "--custom-aliases",
+    "custom_aliases_file",
+    help="Path to custom alias JSON file",
+    type=click.File("r"),
+    default=None,
+)
+def cli(custom_aliases_file=None):
     """CLI entrance point"""
+    if custom_aliases_file:
+        try:
+            custom_aliases = json.load(custom_aliases_file)
+            for item in custom_aliases:
+                emoji = list(item.keys())[0]
+                cust_aliases = item.get(emoji, [])
+                for key, val in EMOJIS.items():
+                    if val.get("emoji") == emoji:
+                        EMOJIS[key]["aliases"] = set(
+                            list(EMOJIS[key]["aliases"]) + cust_aliases
+                        )
+                        # No need to go further
+                        break
+        except AttributeError:
+            print("The custom alias file provided is invalid", file=sys.stderr)
+            sys.exit(2)
 
 
 @cli.command()
@@ -30,11 +55,12 @@ def cli():
 )
 def preview(prepend_emoji=False):
     """Return an fzf-friendly search list for emoji"""
-    for key, val in EMOJIS.items():
+    for name, val in EMOJIS.items():
+        emoji = val.get("emoji", "?")
         if prepend_emoji:
-            click.secho(u"{} ".format(val["emoji"]), nl=False)
-        click.secho(key, bold=True, nl=False)
-        click.echo(u" {}".format(u" ".join(val["aliases"])))
+            click.secho(u"{} ".format(emoji), nl=False)
+        click.secho(name, bold=True, nl=False)
+        click.echo(u" {}".format(u" ".join(val.get("aliases", set()))))
 
 
 @cli.command()
@@ -67,4 +93,6 @@ def get(name=None):
 
 
 if __name__ == "__main__":
+    # https://stackoverflow.com/a/49680253/1872036
+    # pylint: disable=no-value-for-parameter
     cli()
