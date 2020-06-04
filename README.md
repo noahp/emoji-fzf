@@ -9,32 +9,85 @@ pyversions](https://img.shields.io/pypi/pyversions/emoji-fzf.svg?style=for-the-b
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-# emoji fzf
+- [Installation](#installation)
+  - [zsh plugin](#zsh-plugin)
+  - [Manually](#manually)
+    - [Shell alias](#shell-alias)
+    - [vim](#vim)
+- [Alternative setup](#alternative-setup)
+- [Custom emoji aliases](#custom-emoji-aliases)
+- [Development/testing](#developmenttesting)
+
+<!-- omit in toc -->
+# emoji-fzf
 
 Small utility for manipulating emojis via
 [fzf's](https://github.com/junegunn/fzf) `--preview` hook!
 
 <img src="https://cdn.rawgit.com/noahp/emoji-fzf/assets/demo.svg">
 
-Depends on fzf being installed to the system (integrates via bash alias/
-function rather than using fzf bindings or whatnot).
+## Installation
 
-## Use it
+1. Install `fzf` if you don't have it already to use its preview browser:
 
-To use with fzf's preview browser, you'll need to install fzf, see instructions:
-https://github.com/junegunn/fzf#installation
+   https://github.com/junegunn/fzf#installation
+
+2. Install the latest release of `emoji-fzf` from pypi:
+
+   ```bash
+   pip install emoji-fzf
+   ```
+
+See `emoji-fzf --help` for supported commands.
+
+_This project allows you to install the tool in an isolated environment:
+https://github.com/pipxproject/pipx_
+
+### zsh plugin
+
+There's an excellent zsh plugin available, see here (thanks @pschmitt !):
+https://github.com/pschmitt/emoji-fzf.zsh
+
+### Manually
+
+#### Shell alias
+
+You could add a shell alias like the following to your shell init script:
 
 ```bash
-pip install emoji-fzf
-
 # if you aren't installing to a virtual env, you may need to add this to path
-# (if it wasn't already) to access the tool
+# (if it wasn't already) to access the tool from a pip installation
 export PATH=$PATH:~/.local/bin
 
 # add me to your ~/.bashrc or ~/.zshrc or whatnot
 alias emoj="emoji-fzf preview | fzf --preview 'emoji-fzf get --name {1}' | cut -d \" \" -f 1 | emoji-fzf get"
 # to copy to xclip system keyboard (on mac use pbcopy) after selecting
 emoj | xclip -selection c
+```
+
+#### vim
+
+You can also add the following to a `~/.vimrc` file (apologies for the kludgy
+vimscript, I'm not great at it), to enable `C-e` to open the emoji picker and
+insert the selected emoji:
+
+```vimscript
+" Use emoji-fzf and fzf to fuzzy-search for emoji, and insert the result
+function! InsertEmoji(emoji)
+    let @a = system('cut -d " " -f 1 | emoji-fzf get', a:emoji)
+    normal! "agP
+endfunction
+
+command! -bang Emoj
+  \ call fzf#run({
+      \ 'source': 'emoji-fzf preview',
+      \ 'options': '--preview ''emoji-fzf get --name {1}''',
+      \ 'sink': function('InsertEmoji')
+      \ })
+" Ctrl-e in normal and insert mode will open the emoji picker.
+" Unfortunately doesn't bring you back to insert mode 😕
+map <C-e> :Emoj<CR>
+imap <C-e> <C-o><C-e>
 ```
 
 ## Alternative setup
@@ -46,7 +99,7 @@ before their aliases you can use the following alias instead:
 alias emoj="emoji-fzf preview --prepend | fzf | awk '{ print \$1 }'"
 ```
 
-## Custom aliases
+## Custom emoji aliases
 
 emoji-fzf uses a pre-defined set of aliases for every emoji. If you want to
 define your own, ie add custom aliases for some emojis you can do this via the
@@ -94,9 +147,5 @@ locked. The full test infrastructure is:
 To run the test suite in docker just as CI does:
 
 ```bash
-# build the image and tag it as 'emoji-fzf'
-docker build -t emoji-fzf --build-arg "UID=$(id -u)" -f Dockerfile
-
-# from this repo root, mount the cwd into the container and run tox
-docker run -v $(pwd):/mnt/workspace -t emoji-fzf bash -c "cd /mnt/workspace && tox"
+./test.sh
 ```
