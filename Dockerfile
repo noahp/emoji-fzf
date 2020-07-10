@@ -20,3 +20,5 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.2-Linux
 
 # Install these in the base conda env
 RUN pip install tox tox-conda
+
+WORKDIR /mnt/workspace
