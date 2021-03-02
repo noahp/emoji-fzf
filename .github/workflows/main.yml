@@ -27,4 +27,4 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: py27-wheel-output
-          path: .tox/py27-stable/dist/
+          path: .tox/py27/dist/
