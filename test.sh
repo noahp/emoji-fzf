@@ -11,6 +11,8 @@ if ! command -v docker; then
     exit 1
 fi
 
+GIT_ROOT_DIR=$(git worktree list | head -n1 | cut -d ' ' -f 1)
+
 # Set the docker image name to default to repo basename
 DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-$(basename -s .git "$(git remote --verbose | awk 'NR==1 { print tolower($2) }')")}
 
@@ -19,4 +21,7 @@ DOCKER_BUILDKIT=1 docker build -t "$DOCKER_IMAGE_NAME" --build-arg "UID=$(id -u)
 
 # execute tox in the docker container. don't run in parallel; conda has issues
 # when we do this (pkg cache operations are not atomic!)
-docker run -v "$(pwd)":/mnt/workspace -t "$DOCKER_IMAGE_NAME" bash -c "tox"
+docker run --rm -i \
+    --volume "$(pwd)":/mnt/workspace \
+    --volume "${GIT_ROOT_DIR}":"${GIT_ROOT_DIR}" \
+    -t "$DOCKER_IMAGE_NAME" bash -c "tox"
