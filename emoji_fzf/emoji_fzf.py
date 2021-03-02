@@ -53,10 +53,20 @@ def cli(custom_aliases_file=None):
     default=False,
     show_default=True,
 )
-def preview(prepend_emoji=False):
+@click.option(
+    "--skip-multichar",
+    "skip_multichar",
+    help="Whether to skip multicharacter emojis",
+    is_flag=True,
+    default=False,
+    show_default=True,
+)
+def preview(prepend_emoji=False, skip_multichar=False):
     """Return an fzf-friendly search list for emoji"""
     for name, val in EMOJIS.items():
         emoji = val.get("emoji", "?")
+        if skip_multichar and len(emoji) > 1:
+            continue
         if prepend_emoji:
             click.secho(u"{} ".format(emoji), nl=False)
         click.secho(name, bold=True, nl=False)
