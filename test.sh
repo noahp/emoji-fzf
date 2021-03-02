@@ -19,10 +19,11 @@ DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-$(basename -s .git "$(git remote --verbos
 # build the docker image
 DOCKER_BUILDKIT=1 docker build -t "$DOCKER_IMAGE_NAME" --build-arg "UID=$(id -u)" -f Dockerfile .
 
-# execute tox in the docker container- first run as --notest to set up the
-# environments, since conda doesn't support parallel install operations, then
-# run in parallel.
-docker run --rm -i \
+# execute tox in the docker container.
+# run tox in serial mode (omitting --parallel flag) because of this issue:
+# when we test setup.py bdist_wheel, it writes to the .eggs directory. i'm
+# not sure if there's a workaround for this
+docker run --rm \
     --volume "$(pwd)":/mnt/workspace \
     --volume "${GIT_ROOT_DIR}":"${GIT_ROOT_DIR}" \
-    -t "$DOCKER_IMAGE_NAME" bash -c "tox --notest && tox --parallel"
+    -t "$DOCKER_IMAGE_NAME" bash -c "TOX_PARALLEL_NO_SPINNER=1 tox #--parallel"

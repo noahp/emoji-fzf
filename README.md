@@ -137,9 +137,7 @@ emoji-fzf --custom-aliases /path/to/your-custom-aliases.json preview
 This uses a Dockerfile to keep the test build environment relatively clean and
 locked. The full test infrastructure is:
 
-- Docker container, based on buildpack Debian jessie image
-- tox-conda, which enables us to install any python version available on conda
-  channels (here just a few since the supported list is relatively small)
+- Docker container, based on Ubuntu 20.04
 - tox to run the tests + build checks
 - black formatting check
 - check-wheel-contents and isort for more styling/idiomatic usage checks
