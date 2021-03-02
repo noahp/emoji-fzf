@@ -19,9 +19,10 @@ DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-$(basename -s .git "$(git remote --verbos
 # build the docker image
 DOCKER_BUILDKIT=1 docker build -t "$DOCKER_IMAGE_NAME" --build-arg "UID=$(id -u)" -f Dockerfile .
 
-# execute tox in the docker container. don't run in parallel; conda has issues
-# when we do this (pkg cache operations are not atomic!)
+# execute tox in the docker container- first run as --notest to set up the
+# environments, since conda doesn't support parallel install operations, then
+# run in parallel.
 docker run --rm -i \
     --volume "$(pwd)":/mnt/workspace \
     --volume "${GIT_ROOT_DIR}":"${GIT_ROOT_DIR}" \
-    -t "$DOCKER_IMAGE_NAME" bash -c "tox"
+    -t "$DOCKER_IMAGE_NAME" bash -c "tox --notest && tox --parallel"
