@@ -11,12 +11,19 @@ if ! command -v docker; then
     exit 1
 fi
 
+GIT_ROOT_DIR=$(git worktree list | head -n1 | cut -d ' ' -f 1)
+
 # Set the docker image name to default to repo basename
 DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-$(basename -s .git "$(git remote --verbose | awk 'NR==1 { print tolower($2) }')")}
 
 # build the docker image
 DOCKER_BUILDKIT=1 docker build -t "$DOCKER_IMAGE_NAME" --build-arg "UID=$(id -u)" -f Dockerfile .
 
-# execute tox in the docker container. don't run in parallel; conda has issues
-# when we do this (pkg cache operations are not atomic!)
-docker run -v "$(pwd)":/mnt/workspace -t "$DOCKER_IMAGE_NAME" bash -c "tox"
+# execute tox in the docker container.
+# run tox in serial mode (omitting --parallel flag) because of this issue:
+# when we test setup.py bdist_wheel, it writes to the .eggs directory. i'm
+# not sure if there's a workaround for this
+docker run --rm \
+    --volume "$(pwd)":/mnt/workspace \
+    --volume "${GIT_ROOT_DIR}":"${GIT_ROOT_DIR}" \
+    -t "$DOCKER_IMAGE_NAME" bash -c "TOX_PARALLEL_NO_SPINNER=1 tox #--parallel"
