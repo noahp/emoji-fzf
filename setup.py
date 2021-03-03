@@ -93,7 +93,7 @@ setup(
     # I think using `-` instead of `_` is more user-friendly, but due to python
     # import directives not allowing `-`, keep everything consistent with `_`.
     name="emoji-fzf",
-    version="0.4.0",
+    version="0.5.0",
     description="Emoji searcher for use with fzf",
     author="Noah Pendleton",
     author_email="2538614+noahp@users.noreply.github.com",
