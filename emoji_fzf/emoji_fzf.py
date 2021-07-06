@@ -7,6 +7,7 @@ Result is a emoji cli fuzzy search utility 🎉!
 from __future__ import print_function
 
 import json
+import shlex
 import sys
 
 import click
@@ -73,17 +74,10 @@ def preview(prepend_emoji=False, skip_multichar=False):
         click.echo(u" {}".format(u" ".join(val.get("aliases", set()))))
 
 
-@cli.command()
-@click.option("--name", help="Name of emoji to retrieve", type=click.STRING)
-def get(name=None):
-    """
-    Return an emoji by canonical name. Pipe a name string in on stdin, or
-    provide the name via `--name` arg.
-    """
-    if name is None and not sys.stdin.isatty():
-        name = click.get_text_stream("stdin").read().strip()
-    if not name:
-        sys.exit(-1)
+def print_emoji_from_name(name):
+    # skip unknown emojis
+    if name not in EMOJIS:
+        return
 
     render = EMOJIS[name]["emoji"]
 
@@ -102,6 +96,25 @@ def get(name=None):
             sys.stdout = utf8_writer(sys.stdout)
 
         sys.stdout.write(render)
+
+
+@cli.command()
+@click.argument("name", nargs=-1, type=click.STRING)
+@click.option("--name", "arg_name", help="Name of emoji to retrieve", type=click.STRING)
+def get(name, arg_name):
+    """
+    Return 1 or more emoji by canonical name. Names can be piped in on stdin,
+    passed by the '--name' arg, or passed as positional args, or any combination
+    of those.
+    """
+    names = name + (arg_name,)
+    if not sys.stdin.isatty():
+        names = (
+            tuple(shlex.split(click.get_text_stream("stdin").read().strip())) + names
+        )
+
+    for this_emoji in names:
+        print_emoji_from_name(this_emoji)
 
 
 if __name__ == "__main__":
