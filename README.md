@@ -139,8 +139,8 @@ locked. The full test infrastructure is:
 
 - Docker container, based on Ubuntu 20.04
 - tox to run the tests + build checks
-- black formatting check
-- check-wheel-contents and isort for more styling/idiomatic usage checks
+- pre-commit to run isort, black, etc.
+- check-wheel-contents for built wheel sanity
 
 To run the test suite in docker just as CI does:
 

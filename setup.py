@@ -37,8 +37,8 @@ EMOJI_DICT = {}
 # create the dictionary of emojis, keyed by canonical name
 for emoji in GEMOJI_DB_DATA:
     # the emoji canonical name; can contain spaces, replace with _
-    name = "_".join(emoji["description"].split(" "))
-    EMOJI_DICT[name] = {
+    NAME = "_".join(emoji["description"].split(" "))
+    EMOJI_DICT[NAME] = {
         # the unicode codepoint sequence itself
         "emoji": emoji["emoji"],
         # any aliases the gemoji lib provides
@@ -120,6 +120,8 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
     ],
 )

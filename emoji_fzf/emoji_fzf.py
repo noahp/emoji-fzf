@@ -93,8 +93,10 @@ def get(name=None):
     else:
         if sys.version_info < (3, 0):
             # the following is a lame hack to handle python 2 compatibility, oof
-            # from: https://stackoverflow.com/a/20447935
-            import codecs
+            # from: https://stackoverflow.com/a/20447935 . we have to disable
+            # =all instead of just =import-outside-toplevel because python2.7
+            # pylint doesn't support that flag :c
+            import codecs  # pylint: disable=all
 
             utf8_writer = codecs.getwriter("utf8")
             sys.stdout = utf8_writer(sys.stdout)

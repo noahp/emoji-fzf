@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y software-properties-common && \
         python3.7 \
         python3.8 \
         python3.9 \
+        python3.10 \
         wget
 
 # get user id from build arg, so we can have read/write access to directories
@@ -29,7 +30,12 @@ USER ${UNAME}
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /home/${UNAME}/.local/bin:$PATH
 
-# Install tox
-RUN pip3 install tox==3.22.0
+# Install tox. We need a version prior to 3.8 for python3.10 virtualenv to
+# support running pip, see more info here:
+# https://github.com/tox-dev/tox/issues/1485
+#
+# A better fix would be updating virtualenv to the correct upstream patched
+# version, but I couldn't get it to work first try so I gave up
+RUN pip3 install 'tox<3.8'
 
 WORKDIR /mnt/workspace
