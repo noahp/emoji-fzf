@@ -60,7 +60,7 @@ You could add a shell alias like the following to your shell init script:
 export PATH=$PATH:~/.local/bin
 
 # add me to your ~/.bashrc or ~/.zshrc or whatnot
-alias emoj="emoji-fzf preview | fzf --preview 'emoji-fzf get --name {1}' | cut -d \" \" -f 1 | emoji-fzf get"
+alias emoj="emoji-fzf preview | fzf -m --preview "emoji-fzf get --name {1}" | cut -d " " -f 1 | emoji-fzf get"
 # to copy to xclip system keyboard (on mac use pbcopy) after selecting
 emoj | xclip -selection c
 ```
