@@ -26,7 +26,9 @@ SETUP_RUN_DIR = os.environ.get("TOX_INI_DIR", "./")
 
 # Load the gemoji database as a baseline
 with io.open(
-    os.path.join(SETUP_RUN_DIR, "gemoji/db/emoji.json"), "rt", encoding="utf8",
+    os.path.join(SETUP_RUN_DIR, "gemoji/db/emoji.json"),
+    "rt",
+    encoding="utf8",
 ) as gemoji_db:
     GEMOJI_DB_DATA = json.load(gemoji_db)
 
@@ -46,7 +48,9 @@ for emoji in GEMOJI_DB_DATA:
 # merge the aliases from the emojilib database
 # 1. load the json
 with io.open(
-    os.path.join(SETUP_RUN_DIR, "emojilib/emojis.json"), "rt", encoding="utf8",
+    os.path.join(SETUP_RUN_DIR, "emojilib/emojis.json"),
+    "rt",
+    encoding="utf8",
 ) as emojilib_db:
     EMOJILIB_DB_DATA = json.load(emojilib_db)
 # 2. dictionary, keyed by codepoint, of aliases
