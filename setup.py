@@ -48,15 +48,15 @@ for emoji in GEMOJI_DB_DATA:
 # merge the aliases from the emojilib database
 # 1. load the json
 with io.open(
-    os.path.join(SETUP_RUN_DIR, "emojilib/emojis.json"),
+    os.path.join(SETUP_RUN_DIR, "emojilib/dist/emoji-en-US.json"),
     "rt",
     encoding="utf8",
 ) as emojilib_db:
     EMOJILIB_DB_DATA = json.load(emojilib_db)
 # 2. dictionary, keyed by codepoint, of aliases
 EMOJILIB_DB_BY_CODEPOINT = {}
-for canonical_name, val in EMOJILIB_DB_DATA.items():
-    EMOJILIB_DB_BY_CODEPOINT[val["char"]] = tuple(val["keywords"])
+for codepoint, aliases in EMOJILIB_DB_DATA.items():
+    EMOJILIB_DB_BY_CODEPOINT[codepoint] = tuple(aliases)
 # 3. iterate over the gemoji dictionary, updating any common codepoint with the
 #    aliases in the emojilib dictionary. use set() to eliminate duplicates (no
 #    lexical de-duping tho)
@@ -97,7 +97,7 @@ setup(
     # I think using `-` instead of `_` is more user-friendly, but due to python
     # import directives not allowing `-`, keep everything consistent with `_`.
     name="emoji-fzf",
-    version="0.6.0",
+    version="0.6.1",
     description="Emoji searcher for use with fzf",
     author="Noah Pendleton",
     author_email="2538614+noahp@users.noreply.github.com",
