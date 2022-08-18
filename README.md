@@ -17,6 +17,7 @@ MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badg
 - [Alternative setup](#alternative-setup)
 - [Custom emoji aliases](#custom-emoji-aliases)
 - [Development/testing](#developmenttesting)
+  - [Building package for publishing](#building-package-for-publishing)
 
 <!-- omit in toc -->
 # emoji-fzf
@@ -147,3 +148,13 @@ To run the test suite in docker just as CI does:
 ```bash
 ./test.sh
 ```
+
+### Building package for publishing
+
+This just uses old timey setuptools:
+
+```bash
+python setup.py sdist bdist_wheel
+```
+
+Use `twine` to upload to pypi.
