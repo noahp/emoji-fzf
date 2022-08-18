@@ -22,7 +22,7 @@ with io.open("README.md", "rt", encoding="utf8") as readmefile:
 # tox.ini file is located). Our tox setup will inject an env variable with that
 # path, because we do isolated tox builds in non-root folders eg when running in
 # parallel
-SETUP_RUN_DIR = os.environ.get("TOX_INI_DIR", "./")
+SETUP_RUN_DIR = os.environ.get("TOX_INI_DIR", os.path.dirname(__file__))
 
 
 def generate_emoji_db(root_dir, outfile="emoji_fzf/emoji_fzf_emojilib.py"):
