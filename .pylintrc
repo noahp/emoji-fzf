@@ -1,5 +1,3 @@
 [MESSAGES CONTROL]
 
-# disable bad-continuation. it's not 100% compatible with Black, and we prefer
-# Black anyway thanks.
-disable=bad-continuation
+disable=consider-using-f-string

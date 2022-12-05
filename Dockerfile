@@ -1,17 +1,45 @@
-FROM noahpendleton/emoji-fzf:0.1.0
 
-# get user id from build arg, so we can have read/write access to directories
-# mounted inside the container. only the UID is necessary, UNAME just for
-# cosmetics
-ARG UID=1010
-ARG UNAME=builder
+FROM ubuntu:22.04
 
-RUN useradd --uid $UID --create-home --user-group ${UNAME} && \
-    echo "${UNAME}:${UNAME}" | chpasswd && adduser ${UNAME} sudo
+ARG DEBIAN_FRONTEND=noninteractive
 
-USER ${UNAME}
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    clang \
+    curl \
+    git \
+    libbz2-dev \
+    libffi-dev \
+    liblzma-dev \
+    libncurses5-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    libxml2-dev \
+    libxmlsec1-dev \
+    llvm \
+    # python3-pip is used to install tox for orchestrating tests; the actual
+    # test python environments are run via pyenv
+    python3-pip \
+    tk-dev \
+    wget \
+    xz-utils \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV PATH /home/${UNAME}/.local/bin:$PATH
+# pyenv
+RUN git clone --branch v2.3.7 https://github.com/pyenv/pyenv.git /pyenv
+ENV PYENV_ROOT /pyenv
+RUN /pyenv/bin/pyenv install 3.7.15
+RUN /pyenv/bin/pyenv install 3.8.15
+RUN /pyenv/bin/pyenv install 3.9.15
+RUN /pyenv/bin/pyenv install 3.10.8
+RUN /pyenv/bin/pyenv install 3.11.0
 
-WORKDIR /mnt/workspace
+ENV PATH=/pyenv/bin:${PATH}
+
+# Python requirements
+RUN pip3 install --no-cache-dir \
+    tox==3.26.0 \
+    tox-pyenv==1.1.0

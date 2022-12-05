@@ -10,21 +10,29 @@ on:
 
 jobs:
   ci:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+
+    container:
+      image: ghcr.io/noahp/emoji-fzf:2022-12-05
+      # we need to be root for checkout to work without pain
+      options: "--entrypoint='' --user=root"
+
+    strategy:
+      matrix:
+        python: [py37, py38, py39, py310, py311]
 
     steps:
-      # checkout v2, with recursive submodule update
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
 
-      # run the tests in docker
-      - name: test.sh
-        run: ./test.sh
+      - name: 🧪 Run Tox Tests
+        run: |
+          tox -e ${{ matrix.python }}
 
       # upload-artifact is used to save the py27 wheel. this wheel is compatible
       # with python2 and python3
       - uses: actions/upload-artifact@v1
         with:
-          name: py27-wheel-output
-          path: .tox/py27/dist/
+          name: ${{ matrix.python }}-wheel-output
+          path: .tox/${{ matrix.python }}/dist/
