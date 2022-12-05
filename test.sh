@@ -13,11 +13,7 @@ fi
 
 GIT_ROOT_DIR=$(git worktree list | head -n1 | cut -d ' ' -f 1)
 
-# Set the docker image name to default to repo basename
-DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-$(basename -s .git "$(git remote --verbose | awk 'NR==1 { print tolower($2) }')")}
-
-# build the docker image
-DOCKER_BUILDKIT=1 docker build -t "$DOCKER_IMAGE_NAME" --build-arg "UID=$(id -u)" -f Dockerfile .
+DOCKER_IMAGE_NAME="ghcr.io/noahp/emoji-fzf:latest"
 
 # execute tox in the docker container.
 # run tox in serial mode (omitting --parallel flag) because of this issue:
@@ -26,4 +22,8 @@ DOCKER_BUILDKIT=1 docker build -t "$DOCKER_IMAGE_NAME" --build-arg "UID=$(id -u)
 docker run --rm \
     --volume "$(pwd)":/mnt/workspace \
     --volume "${GIT_ROOT_DIR}":"${GIT_ROOT_DIR}" \
-    -t "$DOCKER_IMAGE_NAME" bash -c "TOX_PARALLEL_NO_SPINNER=1 tox #--parallel"
+    -t "$DOCKER_IMAGE_NAME" bash -c "
+    cp -r /mnt/workspace /tmp/workspace &&
+    cd /tmp/workspace &&
+    TOX_PARALLEL_NO_SPINNER=1 tox #--parallel
+    "
