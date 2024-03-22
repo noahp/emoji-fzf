@@ -1,7 +1,7 @@
 [![Code style:
 black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)](https://github.com/ambv/black)
 [![GitHub Workflow
-Status](https://img.shields.io/github/actions/workflow/status/noahp/emoji-fzf/main.yml?branch=main?style=for-the-badge)](https://github.com/noahp/emoji-fzf/actions)
+Status](https://img.shields.io/github/actions/workflow/status/noahp/emoji-fzf/main.yml?branch=main&style=for-the-badge)](https://github.com/noahp/emoji-fzf/actions)
 [![PyPI
 version](https://img.shields.io/pypi/v/emoji-fzf.svg?style=for-the-badge)](https://pypi.org/project/emoji-fzf/)
 [![PyPI
@@ -9,15 +9,16 @@ pyversions](https://img.shields.io/pypi/pyversions/emoji-fzf.svg?style=for-the-b
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-- [Installation](#installation)
-  - [zsh plugin](#zsh-plugin)
-  - [Manually](#manually)
-    - [Shell alias](#shell-alias)
-    - [vim](#vim)
-- [Alternative setup](#alternative-setup)
-- [Custom emoji aliases](#custom-emoji-aliases)
-- [Development/testing](#developmenttesting)
-  - [Building package for publishing](#building-package-for-publishing)
+- [emoji-fzf](#emoji-fzf)
+  - [Installation](#installation)
+    - [zsh plugin](#zsh-plugin)
+    - [Manually](#manually)
+      - [Shell alias](#shell-alias)
+      - [vim](#vim)
+  - [Alternative setup](#alternative-setup)
+  - [Custom emoji aliases](#custom-emoji-aliases)
+  - [Development/testing](#developmenttesting)
+    - [Building package for publishing](#building-package-for-publishing)
 
 <!-- omit in toc -->
 
@@ -112,22 +113,22 @@ aliases and not replace them.
 
 1. First you need to create a JSON file with the following structure:
 
-```json
-[
-  {
-    "👍": ["my-custom-alias", "good-boy"]
-  },
-  {
-    "💯": ["epic-victory-royale"]
-  }
-]
-```
+   ```json
+   [
+     {
+       "👍": ["my-custom-alias", "good-boy"]
+     },
+     {
+       "💯": ["epic-victory-royale"]
+     }
+   ]
+   ```
 
 2. Now you can call `emoji-fzf` like so:
 
-```bash
-emoji-fzf --custom-aliases /path/to/your-custom-aliases.json preview
-```
+   ```bash
+   emoji-fzf --custom-aliases /path/to/your-custom-aliases.json preview
+   ```
 
 ## Development/testing
 
