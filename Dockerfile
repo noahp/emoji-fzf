@@ -29,17 +29,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # pyenv
-RUN git clone --branch v2.3.7 https://github.com/pyenv/pyenv.git /pyenv
+COPY .python-version /tmp/.python-version
+RUN git clone https://github.com/pyenv/pyenv.git /pyenv && cd /pyenv && git checkout 7e550e31f749ce3cda067644de44b18be761470b
 ENV PYENV_ROOT /pyenv
-RUN /pyenv/bin/pyenv install 3.7.15
-RUN /pyenv/bin/pyenv install 3.8.15
-RUN /pyenv/bin/pyenv install 3.9.15
-RUN /pyenv/bin/pyenv install 3.10.8
-RUN /pyenv/bin/pyenv install 3.11.0
+RUN /pyenv/bin/pyenv install --skip-existing $(tr '\n' ' ' < /tmp/.python-version)
 
 ENV PATH=/pyenv/bin:${PATH}
 
 # Python requirements
 RUN pip3 install --no-cache-dir \
-    tox==3.26.0 \
+    tox==3.28.0 \
     tox-pyenv==1.1.0

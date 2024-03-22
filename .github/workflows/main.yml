@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     container:
-      image: ghcr.io/noahp/emoji-fzf:2022-12-05
+      image: ghcr.io/noahp/emoji-fzf:2024-03-22
       # we need to be root for checkout to work without pain
       options: "--entrypoint='' --user=root"
 

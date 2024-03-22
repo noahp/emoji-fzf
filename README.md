@@ -1,5 +1,3 @@
-[![Code style:
-black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)](https://github.com/ambv/black)
 [![GitHub Workflow
 Status](https://img.shields.io/github/actions/workflow/status/noahp/emoji-fzf/main.yml?branch=main&style=for-the-badge)](https://github.com/noahp/emoji-fzf/actions)
 [![PyPI
