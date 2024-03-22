@@ -1,7 +1,7 @@
 [![Code style:
 black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)](https://github.com/ambv/black)
 [![GitHub Workflow
-Status](https://img.shields.io/github/workflow/status/noahp/emoji-fzf/main-ci?style=for-the-badge)](https://github.com/noahp/emoji-fzf/actions)
+Status](https://img.shields.io/github/actions/workflow/status/noahp/emoji-fzf/main.yml?branch=main?style=for-the-badge)](https://github.com/noahp/emoji-fzf/actions)
 [![PyPI
 version](https://img.shields.io/pypi/v/emoji-fzf.svg?style=for-the-badge)](https://pypi.org/project/emoji-fzf/)
 [![PyPI
@@ -20,6 +20,7 @@ MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badg
   - [Building package for publishing](#building-package-for-publishing)
 
 <!-- omit in toc -->
+
 # emoji-fzf
 
 Small utility for manipulating emojis via
@@ -114,15 +115,10 @@ aliases and not replace them.
 ```json
 [
   {
-    "👍": [
-      "my-custom-alias",
-      "good-boy"
-    ]
+    "👍": ["my-custom-alias", "good-boy"]
   },
   {
-    "💯": [
-      "epic-victory-royale"
-    ]
+    "💯": ["epic-victory-royale"]
   }
 ]
 ```

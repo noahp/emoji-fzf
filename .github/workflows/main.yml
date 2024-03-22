@@ -8,6 +8,8 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+
 jobs:
   ci:
     runs-on: ubuntu-22.04
@@ -19,20 +21,23 @@ jobs:
 
     strategy:
       matrix:
-        python: [py37, py38, py39, py310, py311]
+        python: [py38, py39, py310, py311, py312]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: 🧪 Run Tox Tests
+      - name: 🧪 Run Tox Python Tests
         run: |
           tox -e ${{ matrix.python }}
 
-      # upload-artifact is used to save the py27 wheel. this wheel is compatible
-      # with python2 and python3
-      - uses: actions/upload-artifact@v1
+      - name: 🔍 Other Tox Checks
+        run: |
+          tox -e ruff -e check-wheel-contents
+
+      - name: 📦 Upload Wheel Artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.python }}-wheel-output
           path: .tox/${{ matrix.python }}/dist/
