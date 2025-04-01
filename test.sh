@@ -25,5 +25,8 @@ docker run --rm \
     -t "$DOCKER_IMAGE_NAME" bash -c "
     cp -r /mnt/workspace /tmp/workspace &&
     cd /tmp/workspace &&
+    uv venv .venv &&
+    source .venv/bin/activate &&
+    uv pip install tox==3.28.0 tox-pyenv==1.1.0 &&
     TOX_PARALLEL_NO_SPINNER=1 tox #--parallel
     "

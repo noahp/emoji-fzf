@@ -4,3 +4,6 @@
 [submodule "gemoji"]
 	path = gemoji
 	url = ../../github/gemoji
+[submodule "unicode-emoji-json"]
+	path = unicode-emoji-json
+	url = https://github.com/muan/unicode-emoji-json.git

@@ -1,5 +1,5 @@
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -30,13 +30,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # pyenv
 COPY .python-version /tmp/.python-version
-RUN git clone https://github.com/pyenv/pyenv.git /pyenv && cd /pyenv && git checkout 7e550e31f749ce3cda067644de44b18be761470b
-ENV PYENV_ROOT /pyenv
+RUN git clone https://github.com/pyenv/pyenv.git /pyenv && cd /pyenv && git checkout d64d1aa1e0fa410e58cc218e721eb4c3672ce5bd
+ENV PYENV_ROOT=/pyenv
 RUN /pyenv/bin/pyenv install --skip-existing $(tr '\n' ' ' < /tmp/.python-version)
 
 ENV PATH=/pyenv/bin:${PATH}
 
-# Python requirements
-RUN pip3 install --no-cache-dir \
-    tox==3.28.0 \
-    tox-pyenv==1.1.0
+# Install uv for setting up test environment
+COPY --from=ghcr.io/astral-sh/uv:0.6.11 /uv /uvx /bin/

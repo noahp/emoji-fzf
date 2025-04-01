@@ -133,7 +133,7 @@ aliases and not replace them.
 This uses a Dockerfile to keep the test build environment relatively clean and
 locked. The full test infrastructure is:
 
-- Docker container, based on Ubuntu 20.04
+- Docker container
 - tox to run the tests + build checks
 - pre-commit to run isort, black, etc.
 - check-wheel-contents for built wheel sanity
@@ -144,7 +144,7 @@ To run the test suite in docker just as CI does:
 ./test.sh
 ```
 
-### Building package for publishing
+### Publishing
 
 This just uses old timey setuptools:
 

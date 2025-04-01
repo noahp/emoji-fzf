@@ -5,6 +5,7 @@ Package setup.
 
 Set me up with `python setup.py bdist_wheel --universal`
 """
+
 import io
 import json
 import os
@@ -84,6 +85,33 @@ def generate_emoji_db(root_dir, outfile="emoji_fzf/emoji_fzf_emojilib.py"):
         name = name.replace(" ", "_")
         emoji_dict[name] = {"emoji": codepoint, "aliases": tuple(aliases)}
 
+    # 5. now insert any un-aliased emojis from unicode-emoji-json/data-by-emoji.json
+    #    they look like this:
+    #  {
+    #    "😀": {
+    #      "name": "grinning face",
+    #      "slug": "grinning_face",
+    #      "group": "Smileys & Emotion",
+    #      "emoji_version": "1.0",
+    #      "unicode_version": "1.0",
+    #      "skin_tone_support": false
+    #    },
+    with io.open(
+        os.path.join(root_dir, "unicode-emoji-json/data-by-emoji.json"),
+        "rt",
+        encoding="utf8",
+    ) as unicode_db:
+        unicode_db_data = json.load(unicode_db)
+        for emoji, value in unicode_db_data.items():
+            # check if the emoji is already in the dictionary
+            if value["slug"] in emoji_dict:
+                continue
+            # add the emoji to the dictionary
+            emoji_dict[value["slug"]] = {
+                "emoji": emoji,
+                "aliases": tuple(),
+            }
+
     with open(outfile, "w", encoding="utf-8") as genfile:
         genfile.write(
             """# -*- coding: utf-8 -*-
@@ -104,7 +132,7 @@ if __name__ == "__main__":
         # I think using `-` instead of `_` is more user-friendly, but due to python
         # import directives not allowing `-`, keep everything consistent with `_`.
         name="emoji-fzf",
-        version="0.9.0",
+        version="0.10.0",
         description="Emoji searcher for use with fzf",
         author="Noah Pendleton",
         author_email="2538614+noahp@users.noreply.github.com",
@@ -128,6 +156,7 @@ if __name__ == "__main__":
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
             "Programming Language :: Python :: 3.12",
+            "Programming Language :: Python :: 3.13",
             "Operating System :: OS Independent",
         ],
     )

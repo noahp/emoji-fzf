@@ -4,6 +4,7 @@
 Parse emojilib keyword list and provide it as an fzf --preview input.
 Result is a emoji cli fuzzy search utility 🎉!
 """
+
 from __future__ import print_function
 
 import json
@@ -69,9 +70,9 @@ def preview(prepend_emoji=False, skip_multichar=False):
         if skip_multichar and len(emoji) > 1:
             continue
         if prepend_emoji:
-            click.secho(u"{} ".format(emoji), nl=False)
+            click.secho("{} ".format(emoji), nl=False)
         click.secho(name, bold=True, nl=False)
-        click.echo(u" {}".format(u" ".join(val.get("aliases", set()))))
+        click.echo(" {}".format(" ".join(val.get("aliases", set()))))
 
 
 def print_emoji_from_name(name):
