@@ -51,6 +51,25 @@ def get_gemoji_db_data(root_dir):
     return emoji_dict
 
 
+def raw_emoji_list_update(root_dir, emoji_dict):
+    """Update emoji dictionary with raw emoji list from unicode-emoji-json."""
+    with io.open(
+        os.path.join(root_dir, "unicode-emoji-json/data-by-emoji.json"),
+        "rt",
+        encoding="utf8",
+    ) as unicode_db:
+        unicode_db_data = json.load(unicode_db)
+        for emoji, value in unicode_db_data.items():
+            # check if the emoji is already in the dictionary
+            if value["slug"] in emoji_dict:
+                continue
+            # add the emoji to the dictionary
+            emoji_dict[value["slug"]] = {
+                "emoji": emoji,
+                "aliases": tuple(),
+            }
+
+
 def generate_emoji_db(root_dir, outfile="emoji_fzf/emoji_fzf_emojilib.py"):
     """generate the emoji_fzf_emojilib.py file from the gemoji and emojilib databases."""
 
@@ -96,21 +115,7 @@ def generate_emoji_db(root_dir, outfile="emoji_fzf/emoji_fzf_emojilib.py"):
     #      "unicode_version": "1.0",
     #      "skin_tone_support": false
     #    },
-    with io.open(
-        os.path.join(root_dir, "unicode-emoji-json/data-by-emoji.json"),
-        "rt",
-        encoding="utf8",
-    ) as unicode_db:
-        unicode_db_data = json.load(unicode_db)
-        for emoji, value in unicode_db_data.items():
-            # check if the emoji is already in the dictionary
-            if value["slug"] in emoji_dict:
-                continue
-            # add the emoji to the dictionary
-            emoji_dict[value["slug"]] = {
-                "emoji": emoji,
-                "aliases": tuple(),
-            }
+    raw_emoji_list_update(root_dir, emoji_dict)
 
     with open(outfile, "w", encoding="utf-8") as genfile:
         genfile.write(

@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     container:
-      image: ghcr.io/noahp/emoji-fzf:2024-03-22
+      image: ghcr.io/noahp/emoji-fzf:2025-04-01
       # we need to be root for checkout to work without pain
       options: "--entrypoint='' --user=root"
 
@@ -28,12 +28,20 @@ jobs:
         with:
           submodules: recursive
 
+      - name: 🐍 Setup Python
+        run: |
+          uv venv .venv
+          . .venv/bin/activate
+          uv pip install tox==3.28.0 tox-pyenv==1.1.0
+
       - name: 🧪 Run Tox Python Tests
         run: |
+          . .venv/bin/activate
           tox -e ${{ matrix.python }}
 
       - name: 🔍 Other Tox Checks
         run: |
+          . .venv/bin/activate
           tox -e ruff -e check-wheel-contents
 
       - name: 📦 Upload Wheel Artifacts
