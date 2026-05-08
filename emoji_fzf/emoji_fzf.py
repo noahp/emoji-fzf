@@ -36,9 +36,7 @@ def cli(custom_aliases_file=None):
                 cust_aliases = item.get(emoji, [])
                 for key, val in EMOJIS.items():
                     if val.get("emoji") == emoji:
-                        EMOJIS[key]["aliases"] = set(
-                            list(EMOJIS[key]["aliases"]) + cust_aliases
-                        )
+                        EMOJIS[key]["aliases"] = set(list(EMOJIS[key]["aliases"]) + cust_aliases)
                         # No need to go further
                         break
         except AttributeError:
@@ -110,9 +108,7 @@ def get(name, arg_name):
     """
     names = name + (arg_name,)
     if not sys.stdin.isatty():
-        names = (
-            tuple(shlex.split(click.get_text_stream("stdin").read().strip())) + names
-        )
+        names = tuple(shlex.split(click.get_text_stream("stdin").read().strip())) + names
 
     for this_emoji in names:
         print_emoji_from_name(this_emoji)

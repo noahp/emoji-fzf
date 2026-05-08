@@ -130,18 +130,16 @@ aliases and not replace them.
 
 ## Development/testing
 
-This uses a Dockerfile to keep the test build environment relatively clean and
-locked. The full test infrastructure is:
+The full test infrastructure is:
 
-- Docker container
+- uv for Python version and environment management
 - tox to run the tests + build checks
-- pre-commit to run isort, black, etc.
 - check-wheel-contents for built wheel sanity
 
-To run the test suite in docker just as CI does:
+To run the full test suite locally (requires [uv](https://docs.astral.sh/uv/)):
 
 ```bash
-./test.sh
+uvx --with tox-uv tox
 ```
 
 ### Publishing
