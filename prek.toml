@@ -1,0 +1,21 @@
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v5.0.0"
+hooks = [
+  { id = "check-added-large-files" },
+  { id = "check-case-conflict" },
+  { id = "check-executables-have-shebangs" },
+  { id = "check-json" },
+  { id = "check-yaml" },
+  { id = "end-of-file-fixer" },
+  { id = "pretty-format-json", args = ["--autofix", "--no-ensure-ascii"] },
+  { id = "trailing-whitespace" },
+]
+
+[[repos]]
+repo = "https://github.com/astral-sh/ruff-pre-commit"
+rev = "v0.11.2"
+hooks = [
+  { id = "ruff" },
+  { id = "ruff-format" },
+]

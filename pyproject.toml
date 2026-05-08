@@ -1,6 +1,42 @@
 [build-system]
-requires = [
-    "setuptools >= 40.0.4",
-    "wheel >= 0.29.0",
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "emoji-fzf"
+version = "0.10.0"
+description = "Emoji searcher for use with fzf"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Noah Pendleton", email = "2538614+noahp@users.noreply.github.com" }]
+requires-python = ">=3.8"
+dependencies = ["click"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
 ]
-build-backend = 'setuptools.build_meta'
+
+[project.urls]
+Homepage = "https://github.com/noahp/emoji-fzf"
+Code = "https://github.com/noahp/emoji-fzf"
+"Issue tracker" = "https://github.com/noahp/emoji-fzf/issues"
+
+[project.scripts]
+emoji-fzf = "emoji_fzf.emoji_fzf:cli"
+
+[tool.hatch.build.hooks.custom]
+
+[tool.hatch.build.targets.wheel]
+packages = ["emoji_fzf"]
+
+[dependency-groups]
+dev = ["prek"]
+
+[tool.ruff]
+line-length = 100
