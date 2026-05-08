@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "emoji-fzf"
-version = "0.11.0"
+version = "0.12.0"
 description = "Emoji searcher for use with fzf"
 readme = "README.md"
 license = { text = "MIT" }
