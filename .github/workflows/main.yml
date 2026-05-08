@@ -11,41 +11,40 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
-    runs-on: ubuntu-22.04
-
-    container:
-      image: ghcr.io/noahp/emoji-fzf:2025-04-01
-      # we need to be root for checkout to work without pain
-      options: "--entrypoint='' --user=root"
+  test:
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        python: [py38, py39, py310, py311, py312]
+        python: [py310, py311, py312, py313, py314]
 
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: 🐍 Setup Python
-        run: |
-          uv venv .venv
-          . .venv/bin/activate
-          uv pip install tox==3.28.0 tox-pyenv==1.1.0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
       - name: 🧪 Run Tox Python Tests
-        run: |
-          . .venv/bin/activate
-          tox -e ${{ matrix.python }}
+        run: uvx --with tox-uv tox -e ${{ matrix.python }}
+
+  checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
       - name: 🔍 Other Tox Checks
-        run: |
-          . .venv/bin/activate
-          tox -e ruff -e check-wheel-contents
+        run: uvx --with tox-uv tox -e ruff -e check-wheel-contents
 
       - name: 📦 Upload Wheel Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.python }}-wheel-output
-          path: .tox/${{ matrix.python }}/dist/
+          name: wheel-output
+          path: .tox/check-wheel-contents/dist/

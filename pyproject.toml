@@ -9,16 +9,15 @@ description = "Emoji searcher for use with fzf"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "Noah Pendleton", email = "2538614+noahp@users.noreply.github.com" }]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = ["click"]
 classifiers = [
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
 ]
 
@@ -36,7 +35,10 @@ emoji-fzf = "emoji_fzf.emoji_fzf:cli"
 packages = ["emoji_fzf"]
 
 [dependency-groups]
-dev = ["prek"]
+dev = ["prek", "tox>=4", "tox-uv"]
 
 [tool.ruff]
 line-length = 100
+
+[tool.ruff.lint]
+extend-select = ["I"]
