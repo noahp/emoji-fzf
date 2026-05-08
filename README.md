@@ -146,10 +146,6 @@ To run the test suite in docker just as CI does:
 
 ### Publishing
 
-This just uses old timey setuptools:
-
 ```bash
-python setup.py sdist bdist_wheel
+uv build && uv publish --token=$PYPI_TOKEN
 ```
-
-Use `twine` to upload to pypi.
